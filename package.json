@@ -1,0 +1,7 @@
+{
+  "name": "demo-jenkins-app",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"No real tests, just a placeholder\""
+  }
+}
