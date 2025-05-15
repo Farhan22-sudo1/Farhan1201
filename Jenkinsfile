@@ -1,24 +1,32 @@
-
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18'
+        }
+    }
 
     stages {
-        stage('Install & Run All Steps') {
+        stage('Install') {
             steps {
-                echo 'Installing Node.js, then running all steps...'
-                sh '''
-                    curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo bash -
-                    sudo dnf install -y nodejs
+                sh 'npm install'
+            }
+        }
 
-                    node -v
-                    npm -v
+        stage('Test') {
+            steps {
+                sh 'npm test || echo "No tests found"'
+            }
+        }
 
-                    npm install
-                    npm test || echo "No tests found"
+        stage('Build') {
+            steps {
+                sh 'echo "Build complete!"'
+            }
+        }
 
-                    echo "Build complete."
-                    echo "Deploy complete."
-                '''
+        stage('Deploy') {
+            steps {
+                sh 'echo "Deploy complete!"'
             }
         }
     }
