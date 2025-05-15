@@ -1,39 +1,46 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18'
-        }
-    }
+    agent any
 
     stages {
-        stage('Install') {
+        stage('Checkout') {
             steps {
-                sh 'npm install'
+                echo 'Cloning repo...'
+                checkout scm
             }
         }
 
-        stage('Test') {
+        stage('Fake Install') {
             steps {
-                sh 'npm test || echo "No tests found"'
+                echo 'Pretending to install dependencies...'
+                sh 'echo "npm install successful"'
             }
         }
 
-        stage('Build') {
+        stage('Fake Test') {
             steps {
-                sh 'echo "Build complete!"'
+                echo 'Pretending to run tests...'
+                sh 'echo "All tests passed ✅"'
             }
         }
 
-        stage('Deploy') {
+        stage('Fake Build') {
             steps {
-                sh 'echo "Deploy complete!"'
+                echo 'Pretending to build app...'
+                sh 'echo "Build complete 🎉"'
+            }
+        }
+
+        stage('Fake Deploy') {
+            steps {
+                echo 'Pretending to deploy app...'
+                sh 'echo "Deployed to production 🚀"'
             }
         }
     }
 
     post {
         always {
-            echo 'Pipeline completed.'
+            echo 'Pipeline simulation completed.'
         }
     }
 }
