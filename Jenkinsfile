@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'node:18'
+            args '-u root' // ensures file permissions are not an issue
+        }
+    }
 
     stages {
         stage('Checkout') {
@@ -44,4 +49,3 @@ pipeline {
         }
     }
 }
-
