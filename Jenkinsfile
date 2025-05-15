@@ -1,12 +1,19 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:18'
-            args '-u root' // ensures file permissions are not an issue
-        }
-    }
+    agent any
 
     stages {
+        stage('Install Node.js') {
+            steps {
+                echo 'Installing Node.js...'
+                sh '''
+                    curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
+                    yum install -y nodejs
+                    node -v
+                    npm -v
+                '''
+            }
+        }
+
         stage('Checkout') {
             steps {
                 echo 'Cloning repository...'
@@ -14,14 +21,14 @@ pipeline {
             }
         }
 
-        stage('Install') {
+        stage('Install Dependencies') {
             steps {
-                echo 'Installing dependencies...'
+                echo 'Installing npm packages...'
                 sh 'npm install'
             }
         }
 
-        stage('Test') {
+        stage('Run Tests') {
             steps {
                 echo 'Running tests...'
                 sh 'npm test || echo "No tests found, skipping..."'
